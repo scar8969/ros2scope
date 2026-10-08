@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Map · {{ app_name }}{% endblock %}
+{% block nav %}<a href="{{ url_for('index') }}">Telemetry</a><a href="{{ url_for('map_view') }}">Map</a><a href="{{ url_for('index') }}#record">Record</a>{% endblock %}
+{% block navright %}<span class="tag" id="bridge-state">{{ bridge_state }}</span>{% endblock %}
+{% block content %}
+<div class="card" style="padding:0;overflow:hidden">
+  <div style="height:240px;display:flex;align-items:center;justify-content:center;background:
+    repeating-linear-gradient(0deg,#0a1114 0 23px,#111b20 23px 24px),
+    repeating-linear-gradient(90deg,#0a1114 0 23px,#111b20 23px 24px)">
+    <div style="text-align:center">
+      <div style="font-size:28px">🗺</div>
+      <div class="mono">{{ map_label }}</div>
+      <div class="mono dim">pose x {{ pose.x }} y {{ pose.y }} θ {{ pose.theta }}°</div>
+      <div class="mono dim" id="pose-source">{{ pose_source }}</div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <button class="btn g" id="follow-btn" type="button"{% if not recordings %} disabled{% endif %}>follow robot</button>
+  <form method="post" action="{{ url_for('start_recording') }}" style="margin:0">
+    <input type="hidden" name="name" value="{{ recording_name }}">
+    <input type="hidden" name="topic" value="odom">
+    <button class="btn" id="rec-btn" type="submit">● record odom</button>
+  </form>
+  <span class="tag" id="rec-count">{{ recordings | length }} recording(s)</span>
+  <span class="sp"></span>
+  <a class="mono dim" href="{{ url_for('bridge.recordings') }}">/api/recordings</a>
+</div>
+<div class="card">
+  <h4>map topic</h4>
+  <div class="mono dim">channel {{ map_label }} · pose source: {{ pose_source }}</div>
+  <div class="mono dim" style="margin-top:6px">{{ log }}</div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='app.js') }}" defer></script>{% endblock %}

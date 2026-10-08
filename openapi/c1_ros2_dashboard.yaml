@@ -1,0 +1,35 @@
+openapi: 3.0.0
+info:
+  title: "🤖 ros2-dash"
+  version: 0.1.0
+paths:
+  /api/topics:
+    get:
+      summary: topics
+      responses:
+        "200":
+          description: ok
+  /api/record:
+    post:
+      summary: start record
+      responses:
+        "200":
+          description: ok
+  /api/recordings/<id>/stop:
+    post:
+      summary: stop
+      responses:
+        "200":
+          description: ok
+  /api/recordings:
+    get:
+      summary: list
+      responses:
+        "200":
+          description: ok
+  /ws:
+    get:
+      summary: rosbridge relay handshake; the socket itself runs as python -m web.ws
+      responses:
+        "200":
+          description: ok

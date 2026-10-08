@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Telemetry · {{ app_name }}{% endblock %}
+{% block nav %}<a href="{{ url_for('index') }}">Telemetry</a><a href="{{ url_for('map_view') }}">Map</a><a href="#record">Record</a>{% endblock %}
+{% block navright %}
+  <span class="tag{% if bridge_state == 'recording' %} warn{% endif %}" id="bridge-state">{{ bridge_state }}</span>
+  <span class="tag" id="bridge-id">{{ bridge_id }}</span>
+{% endblock %}
+{% block content %}
+<div class="row" id="topic-cards">
+{% for t in topics %}
+  <div class="card" style="flex:1;min-width:168px;margin-bottom:0" data-topic="{{ t.name }}">
+    <h4>{{ t.name }}</h4>
+    <div class="mono">{{ t.channel }}</div>
+    <div class="bar"><i style="width:{{ t.bar }}%"></i></div>
+    <div class="mono dim">{{ t.rate }} Hz cap · {{ t.recordings }} recording(s)</div>
+  </div>
+{% else %}
+  <div class="card" style="flex:1;margin-bottom:0"><h4>no topics</h4><div class="mono dim">TOPIC_REGISTRY is empty</div></div>
+{% endfor %}
+</div>
+
+<div class="card">
+  <div class="row"><h2 style="flex:1">recording sizes</h2><span class="tag" id="rec-count">{{ recordings | length }} recent</span></div>
+  <div class="chart" id="size-chart">
+  {% for h in chart %}<i style="height:{{ h }}%"></i>{% endfor %}
+  </div>
+  {% if not chart %}<div class="mono dim" id="chart-empty">no recording bytes on disk yet — press Record, or POST {{ url_for('bridge.start_record') }}</div>{% endif %}
+</div>
+
+<div class="card" id="record">
+  <div class="row">
+    <form class="row" method="post" action="{{ url_for('start_recording') }}" id="record-form" style="margin:0">
+      <label for="recording-name">name</label>
+      <input id="recording-name" name="name" value="{{ recording_name }}">
+      <label for="recording-topics">topics</label>
+      <input id="recording-topics" name="topic" value="{{ selected_topics | join(', ') }}">
+      <button class="btn" id="rec-btn" type="submit">● record</button>
+    </form>
+    <form method="post" action="{{ url_for('stop_recording', rid=active_recording or 0) }}" id="stop-form" style="margin:0">
+      <button class="btn r" id="stop-btn" type="submit"{% if not active_recording %} disabled{% endif %}>■ stop {{ active_recording or '—' }}</button>
+    </form>
+    <span class="sp"></span>
+    <button class="btn g" id="joystick" type="button">🕹 joystick</button>
+  </div>
+  <div class="mono dim" style="margin-top:6px">output dir {{ output_dir }} · recorder cap 10 msg/s (bridge.topics.RateLimiter)</div>
+  <div class="code" id="record-result">{{ log }}</div>
+</div>
+
+<div class="card" id="recordings">
+  <h4>recordings table</h4>
+  <table>
+    <tr><th>id</th><th>name</th><th>topics</th><th>status</th><th>bytes</th><th>started</th><th></th></tr>
+    {% for r in recordings %}
+    <tr><td class="mono">{{ r.id }}</td><td>{{ r.name }}</td><td class="mono dim">{{ r.topics }}</td>
+        <td><span class="tag{% if r.status == 'recording' %} warn{% endif %}">{{ r.status }}</span></td>
+        <td class="mono">{{ "{:,}".format(r.size) }}</td><td class="mono dim">{{ r.started_at }}</td>
+        <td><a class="mono" href="{{ url_for('index', recording=r.id) }}">focus</a></td></tr>
+    {% else %}
+    <tr><td colspan="7" class="mono dim">no rows in the recordings table yet</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='app.js') }}" defer></script>{% endblock %}

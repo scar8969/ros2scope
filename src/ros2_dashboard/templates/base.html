@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-app="ros2-dash">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}ros2-dash · telemetry{% endblock %}</title>
+<style>
+:root{--bg:#0a1114;--panel:#111b20;--line:#1d2b32;--ink:#e6f4f6;--dim:#7d95a0;--accent:#2ee6c8;--amber:#ffb020;--rose:#ff6b81}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,"Cascadia Mono",monospace;display:flex;flex-direction:column;min-height:100vh}
+header{display:flex;align-items:center;gap:14px;padding:10px 20px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5}
+header .brand{color:var(--accent);font-weight:700;letter-spacing:.06em}
+header .brand:before{content:"◆ ";color:var(--dim)}
+header nav{display:flex;gap:14px}
+header nav a{color:var(--dim);text-decoration:none;padding-bottom:2px;border-bottom:1px solid transparent}
+header nav a:hover{color:var(--ink);border-bottom-color:var(--accent)}
+header .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+main{flex:1;padding:18px 20px 32px;max-width:1180px;width:100%;margin:0 auto}
+h2{font-size:16px;letter-spacing:.02em}
+h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);margin-bottom:8px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--line);border-radius:6px;padding:14px;margin-bottom:12px}
+.card:hover{border-left-color:var(--accent)}
+.card h2,.card h4{margin-bottom:8px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.row:last-child{margin-bottom:0}
+.sp{flex:1}
+.mono{font-family:inherit;font-size:12px}
+.dim{color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--dim);font-weight:500;padding:7px 9px;border-bottom:1px solid var(--line);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+td{padding:7px 9px;border-bottom:1px solid #16222a}
+tr:hover td{background:#14202a}
+input,select,button{font:inherit}
+input,select{background:#0a1114;border:1px solid var(--line);border-radius:5px;color:var(--ink);padding:6px 9px;font-size:12px}
+button,.btn{background:var(--accent);color:#04211c;border:none;border-radius:5px;padding:6px 13px;font-size:12px;font-weight:700;cursor:pointer}
+button:hover{opacity:.88}
+button.ghost,.btn.g{background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:500}
+button.danger,.btn.r{background:transparent;border:1px solid var(--rose);color:var(--rose);font-weight:500}
+[disabled]{opacity:.45;cursor:not-allowed}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:10px;padding:2px 9px;font-size:11px;color:var(--dim)}
+.tag.on{border-color:var(--accent);color:var(--accent)}
+.tag.warn{border-color:var(--amber);color:var(--amber)}
+.bar{height:5px;background:#0a1114;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin:7px 0 5px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.chart{display:flex;align-items:flex-end;gap:3px;height:80px;padding:6px 0}
+.chart i{flex:1;background:linear-gradient(180deg,var(--accent),#1a6f63);border-radius:2px 2px 0 0}
+.code{background:#0a1114;border:1px solid var(--line);border-radius:5px;padding:9px;font-size:12px;color:var(--dim);overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.flash{background:rgba(46,230,200,.1);border:1px solid var(--accent);border-radius:5px;padding:8px 11px;margin-bottom:12px;font-size:12px}
+footer{border-top:1px solid var(--line);padding:12px 20px;color:var(--dim);font-size:11px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+footer a{color:var(--dim)}
+footer a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <span class="brand">ros2-dash</span>
+  <nav>{% block nav %}<a href="{{ url_for('index') }}">Telemetry</a><a href="{{ url_for('map_view') }}">Map</a>{% endblock %}</nav>
+  <span class="right">{% block navright %}{% endblock %}</span>
+</header>
+<main>
+{% with msgs = get_flashed_messages() %}{% if msgs %}{% for m in msgs %}<div class="flash">{{ m }}</div>{% endfor %}{% endif %}{% endwith %}
+{% block content %}{% endblock %}
+</main>
+<footer>
+  <span>ros2-dash 0.1.0</span>
+  <span class="dim">rosbridge <span class="mono">{{ bridge_id }}</span></span>
+  <span class="sp"></span>
+  <a href="{{ url_for('api_health') }}">/api/health</a>
+  <a href="{{ url_for('api_config') }}">/api/config</a>
+  <a href="{{ url_for('api_status') }}">/api/status</a>
+  <a href="{{ url_for('bridge.topics') }}">/api/topics</a>
+  <a href="{{ url_for('bridge.recordings') }}">/api/recordings</a>
+  <a href="{{ url_for('bridge.ws_endpoint') }}">/ws</a>
+</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>
