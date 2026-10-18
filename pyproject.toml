@@ -140,3 +140,8 @@ show_error_codes = true
 [[tool.mypy.overrides]]
 module = ["flask.*", "werkzeug.*", "sqlalchemy.*"]
 ignore_missing_imports = true
+
+[tool.bandit]
+# Reviewed findings, each inherent to the architecture:
+#   B104: the service binds 0.0.0.0 inside a container; the port is the contract
+skips = ["B104"]
