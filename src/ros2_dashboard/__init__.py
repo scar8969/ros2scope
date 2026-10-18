@@ -1,4 +1,5 @@
 """ros2_dashboard -- A ROS2 telemetry dashboard built on Flask."""
+
 from __future__ import annotations
 
 __version__ = "0.1.0"

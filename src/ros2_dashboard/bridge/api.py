@@ -1,11 +1,12 @@
+from flask import Blueprint, jsonify, request
+
+from ..models import Recording, db
 from .ros_bridge import RosBridge
 from .topics import TOPIC_REGISTRY
-from ..models import Recording, db
-
-from flask import Blueprint, jsonify, request
 
 bp = Blueprint("bridge", __name__)
 _bridge = None
+
 
 def get_bridge():
     global _bridge
@@ -13,10 +14,13 @@ def get_bridge():
         _bridge = RosBridge()
     return _bridge
 
+
 @bp.get("/api/topics")
 def topics():
-    return jsonify({"topics": [{"name": k, "type": v, "rate": 10}
-                               for k, v in TOPIC_REGISTRY.items()]})
+    return jsonify(
+        {"topics": [{"name": k, "type": v, "rate": 10} for k, v in TOPIC_REGISTRY.items()]}
+    )
+
 
 @bp.post("/api/record")
 def start_record():
@@ -26,12 +30,14 @@ def start_record():
     db.session.commit()
     return jsonify({"id": rec.id, "status": "recording"})
 
+
 @bp.post("/api/recordings/<id>/stop")
 def stop_record(id):
     rec = Recording.query.get_or_404(int(id))
     rec.status = "saved"
     db.session.commit()
     return jsonify({"status": "saved", "size": rec.size})
+
 
 @bp.get("/ws")
 def ws_endpoint():
@@ -44,11 +50,25 @@ def ws_endpoint():
     This route is the handshake half: it answers the plain GET that a client
     or a health check makes before opening the socket.
     """
-    return jsonify({"transport": "websocket", "path": "/ws", "protocol": "rosbridge",
-                    "relay": "web.ws:main", "command": "python -m web.ws",
-                    "topics": sorted(TOPIC_REGISTRY.values())})
+    return jsonify(
+        {
+            "transport": "websocket",
+            "path": "/ws",
+            "protocol": "rosbridge",
+            "relay": "web.ws:main",
+            "command": "python -m web.ws",
+            "topics": sorted(TOPIC_REGISTRY.values()),
+        }
+    )
+
 
 @bp.get("/api/recordings")
 def recordings():
-    return jsonify({"recordings": [{"id": r.id, "name": r.name, "size": r.size,
-                                    "status": r.status} for r in Recording.query.all()]})
+    return jsonify(
+        {
+            "recordings": [
+                {"id": r.id, "name": r.name, "size": r.size, "status": r.status}
+                for r in Recording.query.all()
+            ]
+        }
+    )

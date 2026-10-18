@@ -1,4 +1,6 @@
-import json, os
+import json
+import os
+
 
 class Recorder:
     def __init__(self, path: str):
@@ -18,6 +20,7 @@ class Recorder:
             self._f.close()
             self._f = None
         return os.path.getsize(self.path) if os.path.exists(self.path) else 0
+
 
 def replay(path):
     with open(path) as f:

@@ -1,7 +1,9 @@
 from datetime import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+
 
 class Topic(db.Model):
     __tablename__ = "topics"
@@ -9,6 +11,7 @@ class Topic(db.Model):
     name = db.Column(db.String(128), unique=True)
     type = db.Column(db.String(64), default="")
     rate = db.Column(db.Integer, default=10)
+
 
 class Recording(db.Model):
     __tablename__ = "recordings"

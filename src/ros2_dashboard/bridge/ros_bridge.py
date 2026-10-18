@@ -1,4 +1,6 @@
-import asyncio, json
+import asyncio
+import json
+
 
 class RosBridge:
     def __init__(self, url: str = "ws://127.0.0.1:9090"):
@@ -7,6 +9,7 @@ class RosBridge:
 
     async def connect(self):
         import websockets
+
         while True:
             try:
                 self._ws = await websockets.connect(self.url, ping_interval=10)
@@ -29,8 +32,8 @@ class RosBridge:
             msg = json.loads(await self._ws.recv())
             if msg.get("op") == "service_response":
                 return msg.get("values", {})
+
     async def _reader(self):
-        import websockets
         while True:
             try:
                 msg = json.loads(await self._ws.recv())
