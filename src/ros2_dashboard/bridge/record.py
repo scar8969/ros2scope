@@ -1,11 +1,12 @@
 import json
 import os
+from typing import Any
 
 
 class Recorder:
     def __init__(self, path: str):
         self.path = path
-        self._f = None
+        self._f: Any = None
 
     def start(self):
         os.makedirs(os.path.dirname(self.path), exist_ok=True)

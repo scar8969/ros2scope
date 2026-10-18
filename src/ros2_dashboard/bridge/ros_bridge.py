@@ -1,11 +1,12 @@
 import asyncio
 import json
+from typing import Any
 
 
 class RosBridge:
     def __init__(self, url: str = "ws://127.0.0.1:9090"):
         self.url = url
-        self._subs = {}
+        self._subs: dict[str, Any] = {}
 
     async def connect(self):
         import websockets

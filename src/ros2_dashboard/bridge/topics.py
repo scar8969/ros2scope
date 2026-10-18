@@ -11,7 +11,7 @@ TOPIC_REGISTRY = {
 class RateLimiter:
     def __init__(self, max_per_sec: int = 10):
         self.max = max_per_sec
-        self._times = []
+        self._times: list[float] = []
 
     def allow(self):
         import time
