@@ -1,4 +1,4 @@
-# ros2-dash
+# ros2scope
 
 > A ROS2 telemetry dashboard built on Flask. It subscribes to a rosbridge server,
 
@@ -6,8 +6,8 @@
 [![python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)](pyproject.toml)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-c1_ros2_dashboard is a Flask service delivered as an installable, typed, test-covered
-distribution. The business logic is unchanged from the original skeleton; what
+ros2scope is a Flask service delivered as an installable, typed, test-covered
+distribution. The business logic is unchanged from the original service; what
 is new is the engineering around it: a packaging story, a configuration
 contract, structured observability, operational endpoints, a hardened
 container, and the gates that keep all of that true.
@@ -17,7 +17,7 @@ container, and the gates that keep all of that true.
 ## Quickstart
 
 ```sh
-git clone <your-fork> c1_ros2_dashboard && cd c1_ros2_dashboard
+git clone <your-fork> ros2scope && cd ros2scope
 python -m venv .venv
 . .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
@@ -136,7 +136,7 @@ variable, rather than surfacing as a confusing runtime error later.
 | `/ws` | GET | HTML/JSON |
 | `/ws` | T | HTML/JSON |
 
-The frozen machine-readable contract is `openapi/c1_ros2_dashboard.yaml`; it is the
+The frozen machine-readable contract is `openapi/ros2scope.yaml`; it is the
 source of truth for path and method coverage.
 
 ---
@@ -154,9 +154,9 @@ source of truth for path and method coverage.
 │   ├── ARCHITECTURE.md
 │   └── OPERATIONS.md
 ├── openapi
-│   └── c1_ros2_dashboard.yaml
+│   └── ros2scope.yaml
 ├── schema
-│   └── c1_ros2_dashboard.sql
+│   └── ros2scope.sql
 ├── src
 │   └── ros2_dashboard
 │       ├── bridge
@@ -176,7 +176,7 @@ source of truth for path and method coverage.
 │       └── ws.py
 ├── tests
 │   ├── conftest.py
-│   ├── test_c1_ros2_dashboard.py
+│   ├── test_ros2scope.py
 │   ├── test_config.py
 │   └── test_ops.py
 ├── .dockerignore

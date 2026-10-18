@@ -9,7 +9,7 @@ they do, and what breaks first under load.
 
 ## 1. Context
 
-c1_ros2_dashboard is a single-process Flask service. It owns its own database (SQLite by
+ros2scope is a single-process Flask service. It owns its own database (SQLite by
 default, any SQLAlchemy-supported backend via `DATABASE_URL`) and is deployed
 behind a reverse proxy or an orchestrator.
 
@@ -74,7 +74,7 @@ flowchart TB
 | `templates/base.html` | asset |
 | `templates/index.html` | asset |
 | `templates/map.html` | asset |
-| `tests/test_c1_ros2_dashboard.py` | module |
+| `tests/test_ros2scope.py` | module |
 | `_app.py` | asset |
 | `ws.py` | module |
 
@@ -138,8 +138,8 @@ writable lives under `/app`.
 
 | Table | Owner |
 | --- | --- |
-| `topics` | owned by `c1_ros2_dashboard` |
-| `recordings` | owned by `c1_ros2_dashboard` |
+| `topics` | owned by `ros2scope` |
+| `recordings` | owned by `ros2scope` |
 
 Tables are created by the application's own bootstrap on first use. No migration
 tool is wired in; the schema is additive, and the service tolerates a missing or

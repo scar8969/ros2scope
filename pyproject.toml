@@ -3,13 +3,13 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "c1-ros2-dashboard"
+name = "ros2scope"
 version = "0.1.0"
-description = "A ROS2 telemetry dashboard built on Flask. It subscribes to a rosbridge server,"
+description = "ROS 2 telemetry dashboard: subscribe over rosbridge, record topics, inspect live rates."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "project-skeletons maintainers" }]
+authors = [{ name = "Priyanshu Rout" }]
 keywords = ["flask", "service", "ros2_dashboard"]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -47,7 +47,7 @@ Documentation = "https://example.invalid/ros2_dashboard/docs"
 Issues = "https://example.invalid/ros2_dashboard/issues"
 
 [project.scripts]
-c1-ros2-dashboard = "ros2_dashboard.cli:main"
+ros2scope = "ros2_dashboard.cli:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

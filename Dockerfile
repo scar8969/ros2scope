@@ -34,7 +34,7 @@ RUN groupadd --system --gid 1001 app \
 WORKDIR /app
 
 COPY --from=builder /wheels /wheels
-RUN python -m pip install --no-cache-dir --no-index --find-links=/wheels c1-ros2-dashboard \
+RUN python -m pip install --no-cache-dir --no-index --find-links=/wheels ros2scope \
  && rm -rf /wheels \
  && mkdir -p /var/lib/ros2_dashboard/instance /var/lib/ros2_dashboard/log \
  && chown -R app:app /var/lib/ros2_dashboard /app

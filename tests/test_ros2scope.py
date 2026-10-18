@@ -1,4 +1,4 @@
-"""C1 ros2-dashboard — tests. Run: pytest test_c1_ros2_dashboard.py"""
+"""C1 ros2-dashboard — tests. Run: pytest test_ros2scope.py"""
 import sys, os, json
 
 import pytest
