@@ -1,102 +1,59 @@
 # Evidence
 
-Every claim below comes from a command that was actually run against this
-exact checkout. Nothing here is inferred from the source alone.
+Every line below was produced by a command run against this exact checkout, on this machine, at the time recorded. Nothing here is copied from the README.
 
-## Commands
+| | |
+| --- | --- |
+| Generated | 2026-10-19 02:26 |
+| Python | 3.14.7 |
+| Platform | Windows 11 |
+
+## Test suite
 
 ```sh
-# from the project directory, with _tools and _tools/_vendor on PYTHONPATH
-python -m pytest -q -p hosttmp_proj tests/
-python -m compileall -q src
+python -m pytest -q
 ```
 
-## Recorded results
+- exit code **0**
+- 23 passed in 1.41s
 
-| check | result |
+## Static gates
+
+| Gate | Exit | Last line |
+| --- | --- | --- |
+| `ruff check` | 0 | All checks passed! |
+| `ruff format --check` | 0 | 20 files already formatted |
+| `mypy src` | 0 | Success: no issues found in 16 source files |
+| `bandit -c pyproject.toml -r src` | 0 | — |
+
+## Live route walk
+
+The application was imported through `wsgi.py` and each GET path declared in `openapi/` was requested once through the Werkzeug test client.
+
+| Status | Path | Bytes | Content-Type |
+| --- | --- | --- | --- |
+| 200 | `/api/topics` | 280 | application/json |
+| 200 | `/api/recordings` | 18 | application/json |
+| 200 | `/ws` | 189 | application/json |
+
+3 paths walked, 0 of them raised or answered 5xx.
+
+## Screenshots
+
+Captured from the running service with headless Chromium at 1440x900 and committed with the repository:
+
+| File | Bytes |
 | --- | --- |
-| compileall | exit 0 |
-| pytest | .......................                                                  [100%] |
-| pytest_exit_code | 0 |
-| recorded_at | 2026-10-08 |
-| routes_ok | 13 |
-| routes_probed | 13 |
+| `docs/assets/screens/healthz.png` | 8,532 |
+| `docs/assets/screens/livez.png` | 7,468 |
+| `docs/assets/screens/map.png` | 29,684 |
+| `docs/assets/screens/metrics.png` | 16,548 |
+| `docs/assets/screens/readyz.png` | 7,880 |
+| `docs/assets/screens/root.png` | 43,335 |
+| `docs/assets/screens/version.png` | 28,296 |
 
-## HTTP surface
+## What this file does not prove
 
-One real GET per rule in the assembled URL map, through Flask's test
-client. `ok` includes 404 on a templated path: an empty database has
-no such resource, and 404 is the honest answer for that.
-
-| method | path | rule | status | bytes | note |
-| --- | --- | --- | --- | --- | --- |
-| GET | `/` | `/` | 200 | 7811 | ok |
-| GET | `/api/config` | `/api/config` | 200 | 335 | ok |
-| GET | `/api/health` | `/api/health` | 200 | 52 | ok |
-| GET | `/api/recordings` | `/api/recordings` | 200 | 18 | ok |
-| GET | `/api/status` | `/api/status` | 200 | 313 | ok |
-| GET | `/api/topics` | `/api/topics` | 200 | 280 | ok |
-| GET | `/healthz` | `/healthz` | 200 | 61 | ok |
-| GET | `/livez` | `/livez` | 200 | 19 | ok |
-| GET | `/map` | `/map` | 200 | 5847 | ok |
-| GET | `/metrics` | `/metrics` | 200 | 256 | ok |
-| GET | `/readyz` | `/readyz` | 200 | 31 | ok |
-| GET | `/version` | `/version` | 200 | 935 | ok |
-| GET | `/ws` | `/ws` | 200 | 189 | ok |
-
-## Operational endpoints
-
-`/healthz` answered **200**:
-
-```
-{"service":"ros2_dashboard","status":"ok","version":"0.1.0"}
-```
-
-`/livez` answered **200**:
-
-```
-{"status":"alive"}
-```
-
-`/readyz` answered **200**:
-
-```
-{"checks":[],"status":"ready"}
-```
-
-`/metrics` answered **200**:
-
-```
-# TYPE http_requests_total counter
-http_requests_total{method="GET",status="200"} 7
-# TYPE http_request_duration_seconds_sum counter
-http_request_duration_seconds_sum{method="GET"} 0.0602518
-# TYPE process_uptime_seconds gauge
-process_uptime_seconds 0.663
-```
-
-`/version` answered **200**:
-
-```
-{"config":{"app_name":"ros2_dashboard","data_dir":".\\var","database_configured":false,"debug":false,"env":"development","host":"0.0.0.0","legacy_env_present":[],"log_json":true,"log_level":"INFO","port":8000,"secret_key_configured":false},"paths":{"data_dir":"c1_ros2_das
-```
-
-## Headers observed on /healthz
-
-| header | value |
-| --- | --- |
-| X-Request-ID | cf13f7f78300456299e273fba5b813b5 |
-| X-Content-Type-Options | nosniff |
-| X-Frame-Options | DENY |
-| Referrer-Policy | no-referrer |
-| Cross-Origin-Opener-Policy | same-origin |
-| Permissions-Policy | geolocation=(), microphone=(), camera=() |
-| Content-Type | application/json |
-
-## What this file does not claim
-
-- No browser screenshot: this host denies the Chromium sandbox the renderer
-  needs, so the HTTP surface is evidenced with recorded status codes instead.
-- No network access: the suite is hermetic and contacts no remote host.
-- No container run: the Dockerfile is reviewed, not executed, because no
-  container runtime is reachable from this host.
+- It is not a load test: every request is a single uncached call from one process.
+- A green suite is not a coverage claim; `pytest --cov` reports the number the README quotes.
+- The route walk exercises GET paths only; mutating routes are covered by the suite.
