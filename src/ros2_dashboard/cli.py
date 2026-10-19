@@ -163,3 +163,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv=None) -> int:
     args = build_parser().parse_args(argv)
     return args.func(args)
+
+
+if __name__ == "__main__":  # pragma: no cover - manual entry point
+    raise SystemExit(main())

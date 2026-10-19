@@ -4,7 +4,7 @@ Every line below was produced by a command run against this exact checkout, on t
 
 | | |
 | --- | --- |
-| Generated | 2026-10-19 02:26 |
+| Generated | 2026-10-19 09:42 |
 | Python | 3.14.7 |
 | Platform | Windows 11 |
 
@@ -15,7 +15,7 @@ python -m pytest -q
 ```
 
 - exit code **0**
-- 23 passed in 1.41s
+- 23 passed in 0.87s
 
 ## Static gates
 
@@ -37,6 +37,25 @@ The application was imported through `wsgi.py` and each GET path declared in `op
 | 200 | `/ws` | 189 | application/json |
 
 3 paths walked, 0 of them raised or answered 5xx.
+
+## CLI
+
+```
+usage: ros2-dash [-h] [--version] {topics,record,replay,serve} ...
+
+ROS2 telemetry dashboard: topics, recordings, replay.
+
+positional arguments:
+  {topics,record,replay,serve}
+    topics              list the topics the dashboard subscribes to
+    record              record topic messages to a JSONL bag
+    replay              print the messages stored in a JSONL bag
+    serve               run the Flask telemetry dashboard
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+```
 
 ## Screenshots
 
