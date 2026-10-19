@@ -4,7 +4,7 @@ Every line below was produced by a command run against this exact checkout, on t
 
 | | |
 | --- | --- |
-| Generated | 2026-10-19 09:42 |
+| Generated | 2026-10-19 11:56 |
 | Python | 3.14.7 |
 | Platform | Windows 11 |
 
@@ -15,15 +15,15 @@ python -m pytest -q
 ```
 
 - exit code **0**
-- 23 passed in 0.87s
+- 23 passed in 0.97s
 
 ## Static gates
 
 | Gate | Exit | Last line |
 | --- | --- | --- |
 | `ruff check` | 0 | All checks passed! |
-| `ruff format --check` | 0 | 20 files already formatted |
-| `mypy src` | 0 | Success: no issues found in 16 source files |
+| `ruff format --check` | 0 | 21 files already formatted |
+| `mypy src` | 0 | Success: no issues found in 17 source files |
 | `bandit -c pyproject.toml -r src` | 0 | — |
 
 ## Live route walk

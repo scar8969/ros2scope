@@ -1,6 +1,6 @@
-from datetime import datetime
-
 from flask_sqlalchemy import SQLAlchemy
+
+from .clock import utcnow
 
 db = SQLAlchemy()
 
@@ -20,5 +20,5 @@ class Recording(db.Model):
     topics_json = db.Column(db.Text, default="[]")
     status = db.Column(db.String(16), default="recording")
     size = db.Column(db.Integer, default=0)
-    started_at = db.Column(db.DateTime, default=datetime.utcnow)
+    started_at = db.Column(db.DateTime, default=utcnow)
     file_path = db.Column(db.String(256), default="")
